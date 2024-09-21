@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 
+import Board from './Board';
+import ImportExport from './ImportExport';
+
 function App() {
 
   const [vals, setVals] = useState(
@@ -60,103 +63,13 @@ function App() {
     buttonEnable(buttonEnabled);
   }
 
-  function importData() {
-    const impexp = document.getElementById("impexp");
-    const newVals = JSON.parse(impexp.value);
-    setVals(newVals);
-    updateUI();
-  }
-
-  function exportData() {
-    const impexp = document.getElementById("impexp");
-    impexp.value = JSON.stringify(vals);
-  }
-
   return (
     <div>
       <Board handleValue={ handleValue } />
       <button id="solvebtn">Solve</button>
-      <div>
-        <input id="impexp" type="text"></input>
-        <button id="impbtn" onClick={ importData }>Import</button>
-        <button id="expbtn" onClick={ exportData }>Export</button>
-      </div>
+      <ImportExport vals={ vals } setVals={ setVals } updateUI={ updateUI } />
     </div>
   );
-}
-
-function Square({ bigRow, bigSquare, row, square, handleValue }) {
-  const uid = "square"+ bigRow + "" + bigSquare + "" + row + "" + square;
-
-  let lastVal = "";
-
-  function handleChange () {
-    const sq = document.getElementById(uid);
-    if(sq.value === " ") {
-      sq.value = "";
-      sq.style.backgroundColor = "white";
-      handleValue(bigRow, bigSquare, row, square, null);
-      sq.blur();
-    } else if((/[^1-9]/).test(sq.value)) sq.value = "";
-    else {
-      sq.style.backgroundColor = "white";
-      handleValue(bigRow, bigSquare, row, square, Number(sq.value));
-      sq.blur();
-    }
-  }
-
-  function handleFocus() {
-    const sq = document.getElementById(uid);
-    lastVal = sq.value;
-    sq.value = "";
-  }
-
-  function handleBlur() {
-    const sq = document.getElementById(uid);
-    if ( lastVal !== "" ) {
-      if ( sq.value === "" )
-        sq.value = lastVal;
-      lastVal = "";
-    }
-  }
-
-  return (
-  <div className='square'>
-    <input className="square-input" type="text" id={ uid } onFocus={ handleFocus } onBlur={ handleBlur } onChange={ handleChange } key="uid" maxLength="1" />
-  </div> 
-  );
-}
-
-function BigSquare ({ bigRow, bigSquare, handleValue }){
-  let bigsquare = [];
-  let row = [];
-  for(let i = 0; i < 3; i++) {
-    for(let j = 0; j < 3; j++) {
-      row.push(<Square key={ "square" + bigRow + "" + bigSquare + "" + i + j } bigRow={ bigRow } bigSquare={ bigSquare } row={ i } square={ j } handleValue={ handleValue } />)
-    }
-    bigsquare.push(<div key={ "row" + bigRow + "" + bigSquare + "" + i } className='row'>{ row }</div>);
-    row = [];
-  }
-  return (
-    <div className='bigSquare'>{ bigsquare }</div>
-  );
-}
-
-function Board ({ handleValue }) {
-  let board = [];
-  let bigrow = [];
-  for(let i = 0; i < 3; i++) {
-    for(let j = 0; j < 3; j++) {
-      bigrow.push(<BigSquare key={ "bigsquare" + i + "" + j } bigRow={ i } bigSquare={ j } handleValue={ handleValue } />)
-    }
-    board.push(<div key={ "bigrow" + i } className='bigRow'>{ bigrow }</div>);
-    bigrow = [];
-  }
-  return (
-    <div className='board'>
-      { board }
-    </div>
-  )
 }
 
 export default App;
