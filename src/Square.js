@@ -1,4 +1,4 @@
-const Square = ({ bigRow, bigSquare, row, square, handleValue }) => {
+const Square = ({ bigRow, bigSquare, row, square, handleValue, changeAdjSqColor }) => {
     const uid = "square"+ bigRow + "" + bigSquare + "" + row + "" + square;
   
     let lastVal = "";
@@ -19,6 +19,7 @@ const Square = ({ bigRow, bigSquare, row, square, handleValue }) => {
     }
   
     function handleFocus() {
+      changeAdjSqColor(bigRow, bigSquare, row, square, "#dadada");
       const sq = document.getElementById(uid);
       lastVal = sq.value;
       sq.value = "";
@@ -31,6 +32,7 @@ const Square = ({ bigRow, bigSquare, row, square, handleValue }) => {
           sq.value = lastVal;
         lastVal = "";
       }
+      changeAdjSqColor(bigRow, bigSquare, row, square, "white");
     }
   
     return (

@@ -9,7 +9,7 @@ function App() {
   const [vals, setVals] = useState(
     JSON.parse(JSON.stringify(Array(3).fill(Array(3).fill(Array(3).fill(Array(3).fill(null))))))
   );
-  useEffect(updateUI, [vals]);
+  useEffect(() => updateUI(true), [vals]);
   
   function handleValue (bigRow, bigSquare, row, square, val) {
     const newVals = vals.slice();
@@ -20,6 +20,26 @@ function App() {
   function buttonEnable(val) {
     const solvebtn = document.getElementById("solvebtn");
     solvebtn.disabled = val ? null : "disabled";
+  }
+
+  function changeAdjSqColor (bigRow, bigSquare, row, square, color) {
+    for(let i = 0; i < 3; i++) {
+      for(let j = 0; j < 3; j++) {
+        for(let k = 0; k < 3; k++) {
+          for(let l = 0; l < 3; l++) {
+            const isInsideBigSquare = (bigRow === i) && (bigSquare === j);
+            const isInsideHorizontalLine = (bigRow === i) && (row === k);
+            const isInsideVerticalLine = (bigSquare === j) && (square === l);
+            const isNotItself = !((bigRow === i) && (bigSquare === j) && (row === k) && (square === l));
+            if ((isInsideBigSquare || isInsideHorizontalLine || isInsideVerticalLine) && isNotItself) {
+              document.getElementById("square"+ i + "" + j + "" + k + "" + l).style.backgroundColor = color;
+              console.log(i,j,k,l)
+            }
+          }
+        }
+      }
+    }
+    updateUI();
   }
 
   function checkValidity(bigRow, bigSquare, row, square, val) {
@@ -44,14 +64,14 @@ function App() {
     return true;
   }
 
-  function updateUI() {
+  function updateUI( resetBoard ) {
     let buttonEnabled = true;
     for(let i = 0; i < 3; i++) {
       for(let j = 0; j < 3; j++) {
         for(let k = 0; k < 3; k++) {
           for(let l = 0; l < 3; l++) {
             document.getElementById("square"+ i + "" + j + "" + k + "" + l).value = vals[i][j][k][l];
-            document.getElementById("square"+ i + "" + j + "" + k + "" + l).style.backgroundColor = "white";
+            if (resetBoard) document.getElementById("square"+ i + "" + j + "" + k + "" + l).style.backgroundColor = "white";
             if(vals[i][j][k][l]){
               let isValid = (checkValidity(i, j, k, l, vals[i][j][k][l]));
               buttonEnabled = buttonEnabled && isValid;
@@ -65,7 +85,7 @@ function App() {
 
   return (
     <div>
-      <Board handleValue={ handleValue } />
+      <Board handleValue={ handleValue } changeAdjSqColor={ changeAdjSqColor } />
       <button id="solvebtn">Solve</button>
       <ImportExport vals={ vals } setVals={ setVals } updateUI={ updateUI } />
     </div>

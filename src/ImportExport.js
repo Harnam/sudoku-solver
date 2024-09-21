@@ -4,7 +4,6 @@ const ImportExport = ({ vals, setVals, updateUI }) => {
         const impexp = document.getElementById("impexp");
         const newVals = JSON.parse(impexp.value);
         setVals(newVals);
-        updateUI();
       }
     
       function exportData() {
