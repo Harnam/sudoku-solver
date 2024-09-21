@@ -11,7 +11,12 @@ function App() {
     const newVals = vals.slice();
     newVals[bigRow][bigSquare][row][square] = val;
     setVals(newVals);
-    checkValidity(bigRow, bigSquare, row, square, val)
+    buttonEnable(checkValidity(bigRow, bigSquare, row, square, val));
+  }
+
+  function buttonEnable(val) {
+    const solvebtn = document.getElementById("solvebtn");
+    solvebtn.disabled = val ? null : "disabled";
   }
 
   function checkValidity(bigRow, bigSquare, row, square, val) {
@@ -26,17 +31,21 @@ function App() {
             if ((isInsideBigSquare || isInsideHorizontalLine || isInsideVerticalLine) && isNotItself) {
               if(vals[i][j][k][l] && vals[i][j][k][l] === val) {
                 document.getElementById("square"+ bigRow + "" + bigSquare + "" + row + "" + square).style.backgroundColor = "#ff6767";
-                return;
+                return false;
               }
             }
           }
         }
       }
     }
+    return true;
   }
 
   return (
-    <Board handleValue={ handleValue } />
+    <div>
+      <Board handleValue={ handleValue } />
+      <button id="solvebtn">Solve</button>
+    </div>
   );
 }
 
