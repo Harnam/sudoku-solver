@@ -68,6 +68,7 @@ function App() {
 
   function updateUI( resetBoard ) {
     let buttonEnabled = true;
+    let countValid = 0;
     for(let i = 0; i < 3; i++) {
       for(let j = 0; j < 3; j++) {
         for(let k = 0; k < 3; k++) {
@@ -76,6 +77,7 @@ function App() {
             if (resetBoard) document.getElementById("square"+ i + "" + j + "" + k + "" + l).style.backgroundColor = "white";
             if(vals[i][j][k][l]){
               let isValid = (checkValidity(i, j, k, l, vals[i][j][k][l]));
+              if(isValid) countValid++;
               buttonEnabled = (state === 0) ? (buttonEnabled && isValid) : true ;
             }
           }
@@ -83,6 +85,7 @@ function App() {
       }
     }
     buttonEnable(buttonEnabled);
+    if(countValid === 81) setState(2);
   }
 
   function setSquareStateUI() {
