@@ -47,9 +47,9 @@ function App() {
       for(let j = 0; j < 3; j++) {
         for(let k = 0; k < 3; k++) {
           for(let l = 0; l < 3; l++) {
+            document.getElementById("square"+ i + "" + j + "" + k + "" + l).value = vals[i][j][k][l];
+            document.getElementById("square"+ i + "" + j + "" + k + "" + l).style.backgroundColor = "white";
             if(vals[i][j][k][l]){
-              console.log(i,j,k,l)
-              document.getElementById("square"+ i + "" + j + "" + k + "" + l).value = vals[i][j][k][l];
               let isValid = (checkValidity(i, j, k, l, vals[i][j][k][l]));
               buttonEnabled = buttonEnabled && isValid;
             }
@@ -57,6 +57,7 @@ function App() {
         }
       }
     }
+    buttonEnable(buttonEnabled);
   }
 
   function importData() {
@@ -91,7 +92,12 @@ function Square({ bigRow, bigSquare, row, square, handleValue }) {
 
   function handleChange () {
     const sq = document.getElementById(uid);
-    if((/[^1-9]/).test(sq.value)) sq.value = "";
+    if(sq.value === " ") {
+      sq.value = "";
+      sq.style.backgroundColor = "white";
+      handleValue(bigRow, bigSquare, row, square, null);
+      sq.blur();
+    } else if((/[^1-9]/).test(sq.value)) sq.value = "";
     else {
       sq.style.backgroundColor = "white";
       handleValue(bigRow, bigSquare, row, square, Number(sq.value));
