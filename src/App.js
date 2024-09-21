@@ -9,9 +9,30 @@ function App() {
   
   function handleValue (bigRow, bigSquare, row, square, val) {
     const newVals = vals.slice();
-    console.log(bigRow, bigSquare, row, square, val);
     newVals[bigRow][bigSquare][row][square] = val;
     setVals(newVals);
+    checkValidity(bigRow, bigSquare, row, square, val)
+  }
+
+  function checkValidity(bigRow, bigSquare, row, square, val) {
+    for(let i = 0; i < 3; i++) {
+      for(let j = 0; j < 3; j++) {
+        for(let k = 0; k < 3; k++) {
+          for(let l = 0; l < 3; l++) {
+            const isInsideBigSquare = (bigRow === i) && (bigSquare === j);
+            const isInsideHorizontalLine = (bigRow === i) && (row === k);
+            const isInsideVerticalLine = (bigSquare === j) && (square === l);
+            const isNotItself = !((bigRow === i) && (bigSquare === j) && (row === k) && (square === l));
+            if ((isInsideBigSquare || isInsideHorizontalLine || isInsideVerticalLine) && isNotItself) {
+              if(vals[i][j][k][l] && vals[i][j][k][l] === val) {
+                document.getElementById("square"+ bigRow + "" + bigSquare + "" + row + "" + square).style.backgroundColor = "#ff6767";
+                return;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   return (
@@ -28,6 +49,7 @@ function Square({ bigRow, bigSquare, row, square, handleValue }) {
     const sq = document.getElementById(uid);
     if((/[^1-9]/).test(sq.value)) sq.value = "";
     else {
+      sq.style.backgroundColor = "white";
       handleValue(bigRow, bigSquare, row, square, Number(sq.value));
       sq.blur();
     }
