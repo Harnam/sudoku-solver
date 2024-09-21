@@ -1,0 +1,67 @@
+.row {
+    /* padding: 10px 0; */
+    border-bottom: solid 3px rgb(200, 200, 200);
+    display: flex;
+}
+.square {
+    /* margin: 0 10px; */
+    height: 35px;
+    /* width: 35px; */
+    /* background-color: aqua; */
+    /* display: flex; */
+    border-left: solid 3px rgb(200, 200, 200);
+    /* border: none; */
+}
+.row :nth-child(1 of .square){
+    border: none;
+}
+
+.square-input {
+    width: 19px;
+    height: 100%;
+    border: none;
+    padding: 0 8px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: xx-large;
+    appearance: none;
+    -moz-appearance: none;
+    outline: none;
+    z-index: 1;
+}
+
+.square-input:focus{
+    border: none;
+    position: relative;
+    /* background-color: yellow; */
+    box-shadow: 0 0 5px 5px #85e9ff;
+    z-index: 10;
+}
+
+.square-input::-webkit-outer-spin-button,
+.square-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.bigSquare{
+    border-left: solid 3px black;
+}
+
+.bigSquare :nth-child(3 of .row) {
+    border: none;
+}
+.bigRow :nth-child(1 of .bigSquare) {
+    border: none;
+}
+.bigRow {
+    display: flex;
+    width: max-content;
+    margin: auto;
+    /* padding: 5px 0; */
+    border-bottom: 3px solid black;
+}
+.board :nth-child(3 of .bigRow) {
+    border-bottom: none;
+}
+.board {
+    margin-top: 50px;
+}
