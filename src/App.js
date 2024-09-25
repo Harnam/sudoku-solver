@@ -4,6 +4,9 @@ import './App.css';
 import Board from './Board';
 import ImportExport from './ImportExport';
 
+import './solveSudoku';
+import solveSudoku from './solveSudoku';
+
 function App() {
 
   const [vals, setVals] = useState(
@@ -130,6 +133,9 @@ function App() {
         setState(1);
         break;
       case 1:
+        let sols = solveSudoku(vals);
+        console.log(sols);
+        setVals(sols.values().next().value)
         setState(2);
         break;
       default:
